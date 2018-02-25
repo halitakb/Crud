@@ -5,21 +5,14 @@ using System.Text;
 
 namespace CrudEntity
 {
-#pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
     public class CrudEntity<T, Cmd, Cnn> where T : new() where Cmd : DbCommand, ICloneable, new() where Cnn : DbConnection, ICloneable, new()
-#pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
     {
-#pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         public CrudEntity()
-#pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         {
                 this._connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Default;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         }
-#pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         public CrudEntity(string connectionString = null)
-#pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         {
-
             if (connectionString == null)
             {
                 this._connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Default;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
@@ -29,9 +22,7 @@ namespace CrudEntity
                 this._connectionString = connectionString;
             }
         }
-#pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         public CrudEntity(string connectionString , string tableName)
-#pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         {
             if (connectionString == null)
             {
@@ -59,9 +50,7 @@ namespace CrudEntity
         {
             _sqlconnection.Close();
         }
-#pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         public bool Add(T TModel)
-#pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         {
             try
             {
@@ -119,10 +108,7 @@ namespace CrudEntity
                 return false;
             }
         }
-
-#pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         public bool Edit(T TModel)
-#pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         {
             try
             {
@@ -170,9 +156,7 @@ namespace CrudEntity
             }
         }
 
-#pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         public List<T> getLists()
-#pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         {
             Connect();
             List<T> TModels = new List<T>();
@@ -201,9 +185,7 @@ namespace CrudEntity
 
 
 
-#pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         public bool Remove(int Id)
-#pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         {
             T l = new T();
             var keys = l.GetType().GetProperties();
