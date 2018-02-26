@@ -1,27 +1,23 @@
 # CrudEntityCSharp
 
 # Nuget Crud.Entity
-Definition of Dbcommand,
 
-Definition of DbConnection,
+# First set 
+DbCrudConnection.setConnection(connectionString,DbCommand,DbConnection);
 
-Definition of Class For Model(Table)
+CrudEntity dBContext = new CrudEntity<TModel>();
+ 
+ default table name "Table1"
+ or
+ 
+ CrudEntity dBContext = new CrudEntity<TModel>(tableName);
+ 
+ 
+ 
+ 
+DbCommand -> SqlCommand..
+DbConnection -> SqlConnection ..
 
-
- public class XDataDb : CrudEntity<XModel, XxxDbcommand, XxxDbConnection>
-    {
-    
-...
-
-connectionString="......"; // Test LocalDb
-
-CrudEntity crud= new CrudEntity(connectionString);
-
-connectionString="......"; // Test LocalDb
-
-tableName="Table1"; //In Database
-
-CrudEntity crud= new CrudEntity(connectionString,tableName);
 
 we have methods..,
 
