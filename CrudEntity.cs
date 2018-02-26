@@ -6,7 +6,7 @@ using System.Text;
 namespace Crud.Entity
 {
 #pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
-    public class CrudEntity<T> : DbCrudContext
+    public class CrudEntity<T> : DbCrudConnection
 #pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
     {
 #pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
@@ -14,7 +14,6 @@ namespace Crud.Entity
 #pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         {
             _tableName = tableName;
-
         }
 #pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         public CrudEntity()
@@ -58,8 +57,8 @@ namespace Crud.Entity
                 kayit.Append(kayit2.ToString());
                 kayit.Append(")");
                 newDbCommand();
-                command.CommandText = kayit.ToString();
-                command.Connection = _sqlconnection;
+                DbCrudConnection.command.CommandText = kayit.ToString();
+                DbCrudConnection.command.Connection = DbCrudConnection._sqlconnection;
                 i = 0;
                 foreach (var key in keys)
                 {
@@ -71,7 +70,7 @@ namespace Crud.Entity
                     }
 
                 }
-                command.ExecuteNonQuery();
+                DbCrudConnection.command.ExecuteNonQuery();
                 Disconnect();
                 return true;
             }
@@ -113,13 +112,13 @@ namespace Crud.Entity
                 kayit.Append(kayit2.ToString());
                 kayit.Append(kayit1.ToString());
                 newDbCommand();
-                command.CommandText = kayit.ToString();
-                command.Connection = _sqlconnection;
+                DbCrudConnection.command.CommandText = kayit.ToString();
+                DbCrudConnection.command.Connection = _sqlconnection;
                 foreach (var key in keys)
                 {
                     AddWithValue("@" + key.Name, key.GetValue(TModel, null));
                 }
-                command.ExecuteNonQuery();
+                DbCrudConnection.command.ExecuteNonQuery();
                 Disconnect();
                 return true;
             }
@@ -141,9 +140,9 @@ namespace Crud.Entity
             List<T> TModels = new List<T>();
             T TModel = new T();
             newDbCommand();
-            command.CommandText = "select * from " + _tableName;
-            command.Connection = _sqlconnection;
-            using (var reader = command.ExecuteReader())
+            DbCrudConnection.command.CommandText = "select * from " + _tableName;
+            DbCrudConnection.command.Connection = DbCrudConnection._sqlconnection;
+            using (var reader = DbCrudConnection.command.ExecuteReader())
             {
                 var keys = TModel.GetType().GetProperties();
                 while (reader.Read())
@@ -169,19 +168,19 @@ namespace Crud.Entity
             var keys = l.GetType().GetProperties();
             Connect();
             newDbCommand();
-            command.CommandText = "delete from " + _tableName + " where " + keys[0].Name + "=@" + keys[0].Name;
-            command.Connection = _sqlconnection;
+            DbCrudConnection.command.CommandText = "delete from " + _tableName + " where " + keys[0].Name + "=@" + keys[0].Name;
+            DbCrudConnection.command.Connection = DbCrudConnection._sqlconnection;
             AddWithValue("@" + keys[0].Name, Id);
-            command.ExecuteNonQuery();
+            DbCrudConnection.command.ExecuteNonQuery();
             Disconnect();
             return true;
         }
         private void AddWithValue(string parameterName, object parameterValue)
         {
-            var parameter = command.CreateParameter();
+            var parameter = DbCrudConnection.command.CreateParameter();
             parameter.ParameterName = parameterName;
             parameter.Value = parameterValue;
-            command.Parameters.Add(parameter);
+            DbCrudConnection.command.Parameters.Add(parameter);
         }
     }
 }

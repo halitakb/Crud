@@ -17,10 +17,10 @@ namespace CrudEntity
 #pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
 #pragma warning restore IDE1006 // Adlandırma Stilleri
         {
-            this.command = dbCommand;
-            this.cmd2 = dbCommand;
-            _sqlconnection = dbConnection;
-            _sqlconnection.ConnectionString = connection;
+            DbCrudConnection.command = dbCommand;
+            DbCrudConnection.cmd2 = dbCommand;
+            DbCrudConnection._sqlconnection = dbConnection;
+            DbCrudConnection._sqlconnection.ConnectionString = connection;
         }
 #pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
 #pragma warning disable IDE1006 // Adlandırma Stilleri
@@ -28,23 +28,23 @@ namespace CrudEntity
 #pragma warning restore IDE1006 // Adlandırma Stilleri
 #pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         {
-            this.command = this.cmd2;
+            DbCrudConnection.command = DbCrudConnection.cmd2;
         }
-        internal DbCommand command { get; set; }
-        private DbCommand cmd2 { get; set; }
-        internal DbConnection _sqlconnection { get; set; }
+        internal static DbCommand command { get; set; }
+        private static DbCommand cmd2 { get; set; }
+        internal static DbConnection _sqlconnection { get; set; }
 
 #pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         public void Connect()
 #pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         {
-            _sqlconnection.Open();
+            DbCrudConnection._sqlconnection.Open();
         }
 #pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         public void Disconnect()
 #pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         {
-            _sqlconnection.Close();
+            DbCrudConnection._sqlconnection.Close();
         }
     }
 }
