@@ -38,7 +38,7 @@ private CrudEntity<XClass> _tablename1;
 
 # "Table1" is must for Database in table name..
 
-default tablename -> "Table1"
+default tablename -> your Model Name..
 
 # call ->>
 
