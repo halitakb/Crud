@@ -4,27 +4,19 @@ using System.Text;
 
 namespace CrudEntity
 {
-#pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
     public class CrudEntity<T> where T : new()
-#pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
     {
-#pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         public CrudEntity(string tableName)
-#pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         {
             _tableName = tableName;
         }
-#pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         public CrudEntity()
-#pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         {
-            _tableName = "Table1";
+            _tableName = typeof(T).Name;
         }
         private string _tableName { get; set; }
         private StringBuilder kayit, kayit1, kayit2;
-#pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         public bool Add(T TModel)
-#pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         {
             try
             {
@@ -80,9 +72,7 @@ namespace CrudEntity
             }
         }
 
-#pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         public bool Edit(T TModel)
-#pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         {
             try
             {
@@ -129,14 +119,8 @@ namespace CrudEntity
             }
         }
 
-#pragma warning disable CS0693 // Tür parametresi dış türden tür parametresi ile aynı ada sahip
-#pragma warning disable IDE1006 // Adlandırma Stilleri
-#pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         public List<T> 
             getLists<T>() where T : class, new()
-#pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
-#pragma warning restore IDE1006 // Adlandırma Stilleri
-#pragma warning restore CS0693 // Tür parametresi dış türden tür parametresi ile aynı ada sahip
         {
             CrudStatic.Connect();
             List<T> TModels = new List<T>();
@@ -160,11 +144,7 @@ namespace CrudEntity
             CrudStatic.Disconnect();
             return TModels;
         }
-#pragma warning disable CS0693 // Tür parametresi dış türden tür parametresi ile aynı ada sahip
-#pragma warning disable CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
         public bool Remove<T>(int Id) where T : class, new()
-#pragma warning restore CS1591 // Genel olarak görülebilir tür veya üye için eksik XML açıklaması
-#pragma warning restore CS0693 // Tür parametresi dış türden tür parametresi ile aynı ada sahip
         {
             T l = new T();
             var keys = l.GetType().GetProperties();
