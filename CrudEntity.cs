@@ -21,7 +21,9 @@ namespace CrudEntity
             try
             {
                 CrudStatic.Connect();
-                kayit = kayit1 = kayit2 = new StringBuilder();
+                kayit = new StringBuilder();
+                kayit1 = new StringBuilder();
+                kayit2 = new StringBuilder();
                 var keys = TModel.GetType().GetProperties();
                 int i = 0;
                 foreach (var key in keys)
