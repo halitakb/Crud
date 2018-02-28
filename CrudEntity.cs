@@ -120,17 +120,35 @@ namespace CrudEntity
                 return false;
             }
         }
-        public List<T> getJoin<X>() where X : class, new()
+        public List<T> getJoin<X>(Dictionary<string,string> whereIs= null, bool IsTop = false, int Top = 100) where X : class, new()
         {
             CrudStatic.command.Connection = CrudStatic._sqlconnection;
             CrudStatic.Connect();
             CrudStatic.newDbCommand();
             kayit = new StringBuilder();
-            kayit.Append("select * from " + _tableName);
-            kayit.Append(" inner join " + typeof(X).Name + " ");
-            kayit.Append("on ");
+            if (IsTop)
+                kayit.Append("select top "+Top.ToString()+" * from " + _tableName);
+            else
+                kayit.Append("select * from " + _tableName);
+            kayit.Append(" inner join " + typeof(X).Name + " on ");
             kayit.Append(typeof(T).Name + "." + typeof(X).Name + "ID = " + typeof(X).Name + ".Id");
-            CrudStatic.command.CommandText = kayit.ToString();
+            if (whereIs != null)
+            {
+                kayit.Append(" where ");
+                foreach (var item in whereIs)
+                {
+                    kayit.Append(" " + item.Key + "=@" + item.Value);
+                }
+                CrudStatic.command.CommandText = kayit.ToString();
+                foreach (var item in whereIs)
+                {
+                    AddWithValue("@" + item.Key, item.Value);
+                }
+            }
+            else
+            {
+                CrudStatic.command.CommandText = kayit.ToString();
+            }
             List<T> TModels = new List<T>();
             T TModel = new T();
             using (var reader = CrudStatic.command.ExecuteReader())
@@ -149,13 +167,57 @@ namespace CrudEntity
             CrudStatic.Disconnect();
             return TModels;
         }
-        public List<T>
-            getLists<T>() where T : class, new()
+        public List<T> getLists<T>(bool IsTop = false,int Top = 100) where T : class, new()
         {
             CrudStatic.command.Connection = CrudStatic._sqlconnection;
             CrudStatic.Connect();
             CrudStatic.newDbCommand();
-            CrudStatic.command.CommandText = "select * from " + _tableName;
+            if(IsTop)
+                CrudStatic.command.CommandText = "select top " + Top.ToString() + " * from " + _tableName;
+            else
+                CrudStatic.command.CommandText = "select * from " + _tableName;
+            List<T> TModels = new List<T>();
+            T TModel = new T();
+            using (var reader = CrudStatic.command.ExecuteReader())
+            {
+                var keys = TModel.GetType().GetProperties();
+                while (reader.Read())
+                {
+                    foreach (var key in keys)
+                    {
+                        key.SetValue(TModel, Convert.ChangeType(reader[key.Name], key.PropertyType));
+                    }
+                    TModels.Add(TModel);
+                    TModel = new T();
+                }
+            }
+            CrudStatic.Disconnect();
+            return TModels;
+        }
+        public List<T> where<T>(Dictionary<string,string> whereIs, int Top=100,bool IsTop=false) where T : class, new()
+        {
+            CrudStatic.command.Connection = CrudStatic._sqlconnection;
+            CrudStatic.Connect();
+            CrudStatic.newDbCommand();
+            kayit = new StringBuilder();
+            if (IsTop)
+                kayit.Append("select top " + Top.ToString() + " * from " + _tableName + " ");
+            else
+                kayit.Append( "select * from " + _tableName +" ");
+            if (whereIs.Count > 0)
+            {
+                kayit.Append("where ");
+            }
+            foreach (var item in whereIs)
+            {
+                kayit.Append(" " + item.Key + "=@"+item.Value);
+            }
+            foreach (var item in whereIs)
+            {
+                AddWithValue("@" + item.Key, item.Value);
+            }
+            CrudStatic.command.CommandText = kayit.ToString();
+
             List<T> TModels = new List<T>();
             T TModel = new T();
             using (var reader = CrudStatic.command.ExecuteReader())
