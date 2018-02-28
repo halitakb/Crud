@@ -1,53 +1,41 @@
 # CrudEntityCSharp
 
 # Nuget Crud.Entity
-Definition of Dbcommand,
-
-Definition of DbConnection,
-
-Definition of Class For Model(Table)
 
 #create context class.. 
 
-public class CrudClass 
+public class xxCrudClass 
 {
 
-  public CrudClass(){
+  public xxCrudClass()
+  	{
    
-   CrudStatic.setConnection(connectionstring,xDbCommand,xDbConnection);
+	CrudStatic.setConnection(connectionstring,new xDbCommand(),new xDbConnection());
 
-  }
+	}
+	
+   	private CrudEntity<Table1> xxTable1 =new CrudEntity<Table1>("Table1");
+	private CrudEntity<Table2> xxTable2 =new CrudEntity<Table2>("Table2");
+	
+..
+..
 
-private CrudEntity<XClass> _tablename1;
-
-        public CrudEntity<XClass> Tablename1
-        {
-            get { return _tablename1; }
-            set { _tablename1 = new CrudEntity<XClass>("Table1"); }
-        }
-        public CrudEntity<XClass1> Tablename2
-        {
-            get { return _tablename2; }
-            set { _tablename2 = new CrudEntity<XClass1>("Table2"); }
-        }
-
-
-// or
-      	private CrudEntity<XClass> Table1 =new CrudEntity<XClass>("Table1");
-	      private CrudEntity<XClass1> Table2 =new CrudEntity<XClass1>("Table2");
-
-# "Table1" is must for Database in table name..
+# "Table1" Model 's name is must database in tablename.
+# "Table2" Model 's name is must database in tablename.
+..
+..
 
 default tablename -> your Model Name..
 
 # call ->>
 
-CrudClass.Table1.Add(new XClass(){ ... ..});
-CrudClass.Table2.Add(new XClass1(){ ... ..});
+xxCrudClass.Table1.Add(new Table1(){ ... ..});
+xxCrudClass.Table2.Add(new Table2(){ ... ..});
+List<Table2> xxLists =d.Table2.getJoin<Table1>();
 
-
-Add ,Remove,Update,
+Add ,Remove,Update,getJoin
 return List Model 
+
 
 ...
 
