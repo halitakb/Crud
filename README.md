@@ -32,9 +32,13 @@ default tablename -> your Model Name..
 xxCrudClass.Table1.Add(new Table1(){ ... ..});
 xxCrudClass.Table2.Add(new Table2(){ ... ..});
 List<Table2> xxLists =d.Table2.getJoin<Table1>();
+
 ->where parameter
+
 ->top parameter
+
 Add ,Remove,Update,getJoin
+
 return List Model 
 
 
