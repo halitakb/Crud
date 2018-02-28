@@ -28,13 +28,13 @@ private CrudEntity<XClass> _tablename1;
         public CrudEntity<XClass1> Tablename2
         {
             get { return _tablename2; }
-            set { _tablename2 = new CrudEntity<XClass>("Table2"); }
+            set { _tablename2 = new CrudEntity<XClass1>("Table2"); }
         }
 
 
 // or
-      	private CrudEntity<XClass> Table1 get{};set{};
-	      private CrudEntity<XClass1> Table2 get{};set{};
+      	private CrudEntity<XClass> Table1 =new CrudEntity<XClass>("Table1");
+	      private CrudEntity<XClass1> Table2 =new CrudEntity<XClass1>("Table2");
 
 # "Table1" is must for Database in table name..
 
