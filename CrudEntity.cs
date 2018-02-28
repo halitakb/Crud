@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -20,13 +20,13 @@ namespace CrudEntity
         {
             try
             {
+                CrudStatic.command.Connection = CrudStatic._sqlconnection;
                 CrudStatic.Connect();
                 kayit = new StringBuilder();
                 kayit1 = new StringBuilder();
                 kayit2 = new StringBuilder();
-                var keys = TModel.GetType().GetProperties();
                 int i = 0;
-                foreach (var key in keys)
+                foreach (var key in typeof(T).GetProperties())
                 {
                     i++;
                     if (i == 1)
@@ -51,9 +51,9 @@ namespace CrudEntity
                 kayit.Append(")");
                 CrudStatic.newDbCommand();
                 CrudStatic.command.CommandText = kayit.ToString();
-                CrudStatic.command.Connection = CrudStatic._sqlconnection;
+
                 i = 0;
-                foreach (var key in keys)
+                foreach (var key in TModel.GetType().GetProperties())
                 {
                     if (i == 0)
                         i++;
@@ -78,13 +78,13 @@ namespace CrudEntity
         {
             try
             {
+                CrudStatic.command.Connection = CrudStatic._sqlconnection;
                 CrudStatic.Connect();
                 kayit = new StringBuilder();
                 kayit1 = new StringBuilder();
                 kayit2 = new StringBuilder();
-                var keys = TModel.GetType().GetProperties();
                 int i = 0;
-                foreach (var key in keys)
+                foreach (var key in typeof(T).GetProperties())
                 {
                     i++;
                     if (i == 1)
@@ -106,7 +106,7 @@ namespace CrudEntity
                 CrudStatic.newDbCommand();
                 CrudStatic.command.CommandText = kayit.ToString();
                 CrudStatic.command.Connection = CrudStatic._sqlconnection;
-                foreach (var key in keys)
+                foreach (var key in TModel.GetType().GetProperties())
                 {
                     AddWithValue("@" + key.Name, key.GetValue(TModel, null));
                 }
@@ -120,16 +120,19 @@ namespace CrudEntity
                 return false;
             }
         }
-
-        public List<T> 
-            getLists<T>() where T : class, new()
+        public List<T> getJoin<X>() where X : class, new()
         {
+            CrudStatic.command.Connection = CrudStatic._sqlconnection;
             CrudStatic.Connect();
+            CrudStatic.newDbCommand();
+            kayit = new StringBuilder();
+            kayit.Append("select * from " + _tableName);
+            kayit.Append(" inner join " + typeof(X).Name + " ");
+            kayit.Append("on ");
+            kayit.Append(typeof(T).Name + "." + typeof(X).Name + "ID = " + typeof(X).Name + ".Id");
+            CrudStatic.command.CommandText = kayit.ToString();
             List<T> TModels = new List<T>();
             T TModel = new T();
-            CrudStatic.newDbCommand();
-            CrudStatic.command.CommandText = "select * from " + _tableName;
-            CrudStatic.command.Connection = CrudStatic._sqlconnection;
             using (var reader = CrudStatic.command.ExecuteReader())
             {
                 var keys = TModel.GetType().GetProperties();
@@ -146,15 +149,39 @@ namespace CrudEntity
             CrudStatic.Disconnect();
             return TModels;
         }
-        public bool Remove<T>(int Id) where T : class, new()
+        public List<T>
+            getLists<T>() where T : class, new()
         {
-            T l = new T();
-            var keys = l.GetType().GetProperties();
+            CrudStatic.command.Connection = CrudStatic._sqlconnection;
             CrudStatic.Connect();
             CrudStatic.newDbCommand();
-            CrudStatic.command.CommandText = "delete from " + _tableName + " where " + keys[0].Name + "=@" + keys[0].Name;
+            CrudStatic.command.CommandText = "select * from " + _tableName;
+            List<T> TModels = new List<T>();
+            T TModel = new T();
+            using (var reader = CrudStatic.command.ExecuteReader())
+            {
+                var keys = TModel.GetType().GetProperties();
+                while (reader.Read())
+                {
+                    foreach (var key in keys)
+                    {
+                        key.SetValue(TModel, Convert.ChangeType(reader[key.Name], key.PropertyType));
+                    }
+                    TModels.Add(TModel);
+                    TModel = new T();
+                }
+            }
+            CrudStatic.Disconnect();
+            return TModels;
+        }
+        public bool Remove(int Id)
+        {
             CrudStatic.command.Connection = CrudStatic._sqlconnection;
-            AddWithValue("@" + keys[0].Name, Id);
+            CrudStatic.Connect();
+            CrudStatic.newDbCommand();
+            var Name = typeof(T).GetProperties()[0].Name;
+            CrudStatic.command.CommandText = "delete from " + _tableName + " where " + Name + "=@" + Name;
+            AddWithValue("@" + Name, Id);
             CrudStatic.command.ExecuteNonQuery();
             CrudStatic.Disconnect();
             return true;
