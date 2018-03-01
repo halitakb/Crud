@@ -37,7 +37,9 @@ List<Table2> xxLists =d.Table2.getJoin<Table1>();
 
 ->top parameter
 
-Add ,Remove,Update,getJoin
+->procedure
+
+Add ,Remove,Update,getJoin,procedure,where
 
 return List Model 
 
