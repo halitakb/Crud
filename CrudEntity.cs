@@ -139,7 +139,7 @@ namespace CrudEntity
                 kayit.Append(" where ");
                 foreach (var item in whereIs)
                 {
-                    kayit.Append(" " + item.Key + "=@" + item.Value);
+                    kayit.Append(" " + item.Key + "=@" + item.Key);
                 }
                 CrudStatic.command.CommandText = kayit.ToString();
                 foreach (var item in whereIs)
@@ -197,7 +197,7 @@ namespace CrudEntity
             CrudStatic.Disconnect();
             return TModels;
         }
-        public List<T> where<T>(Dictionary<string, string> whereIs, int Top = 100, bool IsTop = false) where T : class, new()
+        public List<T> where<T>(Dictionary<string, object> whereIs, int Top = 100, bool IsTop = false) where T : class, new()
         {
             CrudStatic.command.Connection = CrudStatic._sqlconnection;
             CrudStatic.Connect();
@@ -214,7 +214,7 @@ namespace CrudEntity
             }
             foreach (var item in whereIs)
             {
-                kayit.Append(" " + item.Key + "=@" + item.Value);
+                kayit.Append(" " + item.Key + "=@" + item.Key);
             }
             CrudStatic.command.CommandText = kayit.ToString();
             foreach (var item in whereIs)
