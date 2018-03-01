@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace CrudEntity
@@ -51,7 +52,7 @@ namespace CrudEntity
                 kayit.Append(")");
                 CrudStatic.newDbCommand();
                 CrudStatic.command.CommandText = kayit.ToString();
-
+                CrudStatic.command.CommandType = System.Data.CommandType.Text;
                 i = 0;
                 foreach (var key in TModel.GetType().GetProperties())
                 {
@@ -80,6 +81,7 @@ namespace CrudEntity
             {
                 CrudStatic.command.Connection = CrudStatic._sqlconnection;
                 CrudStatic.Connect();
+                CrudStatic.newDbCommand();
                 kayit = new StringBuilder();
                 kayit1 = new StringBuilder();
                 kayit2 = new StringBuilder();
@@ -103,9 +105,8 @@ namespace CrudEntity
                 kayit.Append("update " + _tableName + " set ");
                 kayit.Append(kayit2.ToString());
                 kayit.Append(kayit1.ToString());
-                CrudStatic.newDbCommand();
+                CrudStatic.command.CommandType = CommandType.Text;
                 CrudStatic.command.CommandText = kayit.ToString();
-                CrudStatic.command.Connection = CrudStatic._sqlconnection;
                 foreach (var key in TModel.GetType().GetProperties())
                 {
                     AddWithValue("@" + key.Name, key.GetValue(TModel, null));
@@ -120,14 +121,15 @@ namespace CrudEntity
                 return false;
             }
         }
-        public List<T> getJoin<X>(Dictionary<string,string> whereIs= null, bool IsTop = false, int Top = 100) where X : class, new()
+        public List<T> getJoin<X>(Dictionary<string, string> whereIs = null, bool IsTop = false, int Top = 100) where X : class, new()
         {
             CrudStatic.command.Connection = CrudStatic._sqlconnection;
             CrudStatic.Connect();
             CrudStatic.newDbCommand();
+            CrudStatic.command.CommandType = CommandType.Text;
             kayit = new StringBuilder();
             if (IsTop)
-                kayit.Append("select top "+Top.ToString()+" * from " + _tableName);
+                kayit.Append("select top " + Top.ToString() + " * from " + _tableName);
             else
                 kayit.Append("select * from " + _tableName);
             kayit.Append(" inner join " + typeof(X).Name + " on ");
@@ -167,12 +169,13 @@ namespace CrudEntity
             CrudStatic.Disconnect();
             return TModels;
         }
-        public List<T> getLists<T>(bool IsTop = false,int Top = 100) where T : class, new()
+        public List<T> getLists<T>(bool IsTop = false, int Top = 100) where T : class, new()
         {
             CrudStatic.command.Connection = CrudStatic._sqlconnection;
             CrudStatic.Connect();
             CrudStatic.newDbCommand();
-            if(IsTop)
+            CrudStatic.command.CommandType = CommandType.Text;
+            if (IsTop)
                 CrudStatic.command.CommandText = "select top " + Top.ToString() + " * from " + _tableName;
             else
                 CrudStatic.command.CommandText = "select * from " + _tableName;
@@ -194,30 +197,30 @@ namespace CrudEntity
             CrudStatic.Disconnect();
             return TModels;
         }
-        public List<T> where<T>(Dictionary<string,string> whereIs, int Top=100,bool IsTop=false) where T : class, new()
+        public List<T> where<T>(Dictionary<string, string> whereIs, int Top = 100, bool IsTop = false) where T : class, new()
         {
             CrudStatic.command.Connection = CrudStatic._sqlconnection;
             CrudStatic.Connect();
             CrudStatic.newDbCommand();
+            CrudStatic.command.CommandType = System.Data.CommandType.Text;
             kayit = new StringBuilder();
             if (IsTop)
                 kayit.Append("select top " + Top.ToString() + " * from " + _tableName + " ");
             else
-                kayit.Append( "select * from " + _tableName +" ");
+                kayit.Append("select * from " + _tableName + " ");
             if (whereIs.Count > 0)
             {
                 kayit.Append("where ");
             }
             foreach (var item in whereIs)
             {
-                kayit.Append(" " + item.Key + "=@"+item.Value);
+                kayit.Append(" " + item.Key + "=@" + item.Value);
             }
+            CrudStatic.command.CommandText = kayit.ToString();
             foreach (var item in whereIs)
             {
                 AddWithValue("@" + item.Key, item.Value);
             }
-            CrudStatic.command.CommandText = kayit.ToString();
-
             List<T> TModels = new List<T>();
             T TModel = new T();
             using (var reader = CrudStatic.command.ExecuteReader())
@@ -241,6 +244,7 @@ namespace CrudEntity
             CrudStatic.command.Connection = CrudStatic._sqlconnection;
             CrudStatic.Connect();
             CrudStatic.newDbCommand();
+            CrudStatic.command.CommandType = System.Data.CommandType.Text;
             var Name = typeof(T).GetProperties()[0].Name;
             CrudStatic.command.CommandText = "delete from " + _tableName + " where " + Name + "=@" + Name;
             AddWithValue("@" + Name, Id);
@@ -248,12 +252,43 @@ namespace CrudEntity
             CrudStatic.Disconnect();
             return true;
         }
-        private void AddWithValue(string parameterName, object parameterValue)
+        private void AddWithValue(string parameterName, object parameterValue, ParameterDirection direction = ParameterDirection.Input, DbType dbType = DbType.String)
         {
             var parameter = CrudStatic.command.CreateParameter();
             parameter.ParameterName = parameterName;
             parameter.Value = parameterValue;
+            parameter.Direction = direction;
+            parameter.DbType = dbType;
             CrudStatic.command.Parameters.Add(parameter);
+        }
+        public List<ProcedureModel> procedureT<ProcedureModel>(string commandText, Dictionary<string, string> parameters, ParameterDirection direction = ParameterDirection.Input, DbType dbType = DbType.String) where ProcedureModel : class, new()
+        {
+            CrudStatic.command.Connection = CrudStatic._sqlconnection;
+            CrudStatic.Connect();
+            CrudStatic.newDbCommand();
+            CrudStatic.command.CommandType = CommandType.StoredProcedure;
+            CrudStatic.command.CommandText = commandText;
+            var Name = typeof(ProcedureModel).GetProperties()[0].Name;
+            foreach (var item in parameters)
+            {
+                AddWithValue(item.Key, item.Value, direction, dbType);
+            }
+
+            List<ProcedureModel> TModels = new List<ProcedureModel>();
+            ProcedureModel TModel = new ProcedureModel();
+            using (var reader = CrudStatic.command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    foreach (var key in TModel.GetType().GetProperties())
+                    {
+                        key.SetValue(TModel, Convert.ChangeType(reader[key.Name], key.PropertyType));
+                    }
+                    TModels.Add(TModel);
+                    TModel = new ProcedureModel();
+                }
+            }
+            return TModels;
         }
     }
 }
