@@ -122,9 +122,9 @@ db.TModel
     .Remove();
    
    
-  # Transaction
+  # Transaction  #only 3.0.0.2
   
-  #only 3.0.0.2
+ 
   
   db.TModel
   
