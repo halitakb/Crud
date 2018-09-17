@@ -87,11 +87,15 @@ db.TModel
     
 
  db.TModel
+ 
      .Add(TModel2); 
  
- db.TModel
+ #db.TModel
+ 
      .InsertParam("name", TModel.name)
+     
      .InsertParam("sur", TModel.sur)
+     
      .Add()
     
 
