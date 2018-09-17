@@ -124,6 +124,8 @@ db.TModel
    
   # Transaction
   
+  #only 3.0.0.2
+  
   db.TModel
   
     .Add(TModel,true)
