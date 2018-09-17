@@ -35,6 +35,28 @@
         
     }
 
+# Model
+
+ public class TModel :CrudModel
+ 
+   {
+    ....
+   }
+   
+# Facade
+
+ public class TModel : ICrudFacade
+ 
+   {
+    ....
+   }
+   
+# AddParam
+
+  Where query parameter
+  
+
+
 # Use
 
 XDataDb db= new XDataDb();
@@ -64,18 +86,26 @@ db.TModel
     .ListFacade<TModelFacade>(typeof(TModel).Name);
     
 
- db.Add(TModel2); 
+ db.TModel
  
- db.InsertParam("name", TModel.name)
+    .Add(TModel2); 
+ 
+ db.TModel
+ 
+    .InsertParam("name", TModel.name)
  
     .InsertParam("sur", TModel.sur)
     
     .Add()
     
 
- db.Edit(TModel2); 
+ db.TModel
  
- db.AddParam("id", TModel.Id,true)
+    .Edit(TModel2); 
+ 
+ db.TModel
+ 
+     .AddParam("id", TModel.Id,true)
  
     .UpdateParam("name", TModel.name)
     
@@ -83,10 +113,31 @@ db.TModel
     
     .Update()
     
- db.AddParam("name", TModel.name,true)
+ db.TModel
+ 
+    .AddParam("name", TModel.name,true)
  
     .AddParam("sur", TModel.sur)
     
     .Remove();
    
+   
+  # Transaction
+  
+  db.TModel
+  
+    .Add(TModel,true)
+    
+    .Add(TModel2,true)
+    
+    .EndTrans();
+    
+  db.TModel
+  
+    .Add(TModels,true) // TModels-> List<TModel>
+    
+    .Add(TModel2,true)
+    
+    .EndTrans();
+    
 Test purpose and development
