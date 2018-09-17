@@ -4,20 +4,35 @@
 
 # Db config
  public class XDataDb : CrudDB
+ 
     {
+    
         public XDataDb()
+        
             :base(
+            
                  connectionstring:"...",
+                 
                  dbCommand:typeof(DbCommand),     //NpgsqlCommand,MySqlDbCommand  ... IDbCommand
+                 
                  dbConnection:typeof(DBConnection), //NpgsqlConnection,MySqlConnection ...  IDbConnection
+                 
                  DbType:Util.DatabaseName.Postgresql  //  Postgresql,Mssql,Mysql,Oracle (Not test only Postgresql)
+                 
                  ){}
+                 
         public TModel TModel => new TModel();
+        
         public TModel1 TModel1 => new TModel1();
+        
         public TModel2 TModel2 => new TModel2();
+        
         public TModel3 TModel3=> new TModel3();
+        
         public TModel4 TModel4 => new TModel4();
+        
         ...
+        
     }
 
 # Use
