@@ -40,34 +40,53 @@
 XDataDb db= new XDataDb();
 
 db.TModel
+
     .Join<TModel, TModel2>(true)  in both cases true or false TModel inner join ?TModel2:TModel on TModel2.TModelID=TModel.id 
+    
     .Join<TModel1, TModel2>()
+    
     .Join<TModel2, TModel3>()
+    
     ...
+    
     .AddParam("TModel2.TModelID", TModel.Id,true) //add param last parameter of (true) for start 
+    
     .AddParam("TModel2.TModel1ID", TModel1.Id)
+    
     .AddSelect("field")
+    
     .AddSelect("TModel1.field1","newName")  //field1 as newName
+    
     .AddSelect("TModel1.field2","newName2")  //field1 as newName
+    
     ..
+    
     .ListFacade<TModelFacade>(typeof(TModel).Name);
+    
 
  db.Add(TModel2); 
- db.
-    .InsertParam("name", TModel.name)
+ 
+ db.InsertParam("name", TModel.name)
+ 
     .InsertParam("sur", TModel.sur)
+    
     .Add()
+    
 
  db.Edit(TModel2); 
- db.
-     .AddParam("id", TModel.Id,true)
+ 
+ db.AddParam("id", TModel.Id,true)
+ 
     .UpdateParam("name", TModel.name)
+    
     .UpdateParam("sur", TModel.sur)
+    
     .Update()
- db.
-    .AddParam("name", TModel.name,true)
+    
+ db.AddParam("name", TModel.name,true)
+ 
     .AddParam("sur", TModel.sur)
+    
     .Remove();
-
-
+   
 Test purpose and development
