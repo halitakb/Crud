@@ -129,6 +129,10 @@ db.TModel
     
     .Remove();
    
+ db.TModel
+   
+     .ListWithSql<T>(query,param1,param2...) ;
+       
    
   # Transaction 
   
@@ -161,10 +165,7 @@ db.TModel
    
        .AddSql(TModel,query, true, param1,param2...)
        
-   db.TModel
-   
-     .ListWithSql<T>(query,param1,param2...) ;
-       
+
  # param1,param2...
  
         insert delete ..
