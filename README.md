@@ -55,6 +55,9 @@
 
   Where query parameter
   
+    Condittion  AND, OR, AND NOT
+    
+    Param  Equal, Great,   Small,  GreatEqual,   SmallEqual,    NotEqual
 
 
 # Use
@@ -148,8 +151,26 @@ db.TModel
     .Add(TModel2,true)
     
     .EndTrans();
-        //.EndTransAsync
-
+    
+     //.EndTransAsync
+        
+     
+        
+        
+   db.TModel
+   
+       .AddSql(TModel,query, true, param1,param2...)
+       
+   db.TModel
+   
+     .ListWithSql<T>(query,param1,param2...) ;
+       
+ # param1,param2...
+ 
+        insert delete ..
+        
+        select * from tmodel where id=@id and name=@name
+        
 maybe I may be wrong in my description.
 
 Test purpose and development
