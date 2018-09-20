@@ -171,6 +171,29 @@ db.TModel
         insert delete ..
         
         select * from tmodel where id=@id and name=@name
+ 
+ # V3.0.0.5
+    
+    Fix Limit
+    Fix AddSelect
+    
+    
+     db.TModel
+     
+       .AddSelect(true, params params string[] columnames)
+       
+       .AddSelect(columname, asColumn)
+       ...
+       
+     db.TModel
+       
+       .Add(true, TModel,TModel1...)  //only Transaction
+       .EndTrans()
+       
+       
+     
+    
+    
         
 maybe I may be wrong in my description.
 
