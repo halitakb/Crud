@@ -191,7 +191,17 @@ db.TModel
        .EndTrans()
        
        
-     
+# V3.0.0.6
+
+    Fix Join Randomize
+    
+    Fix List
+    
+    Fix Param Randomize
+    
+# Note
+
+ Don't Accept Null value for Add,Update..
     
     
         
